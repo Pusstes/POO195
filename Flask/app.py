@@ -12,7 +12,7 @@ app.config['MYSQL_DB'] = 'bdflask' #nombre de la base de datos
 
 mysql = MySQL(app) #se crea una instancia de MySQL
 
-#ruta simple
+#ruta prueba conexion
 @app.route('/pruebaConexion')
 def pruebaConexion():
     try:
