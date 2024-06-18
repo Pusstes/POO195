@@ -1,24 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario albums</title>
 </head>
+
 <body>
     <form action="/guardarAlbum" method="post">
         <label for="title">Título</label>
         <input type="text" name="titulo">
-        <br></br>
+        <br><br>
 
         <label for="artist">Artista</label>
         <input type="text" name="artista">
-        <br></br>
+        <br><br>
 
         <label for="year">Año</label>
-        <input type="number"  name="anio">
-        <br></br>
-        
+        <input type="number" name="anio">
+        <br><br>
+
         <button type="submit">Guardar Album</button>
+        <br><br>
+        <br><br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Id:</th>
+                    <th>Titulo:</th>
+                    <th>Artista:</th>
+                    <th>Año:</th>
+                    <th>Acciones:</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for album in albums %}
+                <tr>
+                    <td>{{ album[0] }}</td>
+                    <td>{{ album[1] }}</td>
+                    <td>{{ album[2] }}</td>
+                    <td>{{ album[3] }}</td>
+                    <td>
+                        <a href="/editarAlbum/{{ album[0] }}">Editar</a>
+                        <a href="/eliminarAlbum/{{ album[0] }}">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 </body>
+
 </html>
