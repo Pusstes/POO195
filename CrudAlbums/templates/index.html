@@ -1,30 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "Plantilla.html"%}
+{% block body %}
+<!-- mensaje jinja -->
+{%with msj= get_flashed_messages() %}
+{% if msj %}
+{% for mensaje in msj %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario albums</title>
-</head>
 
-<body>
-    <form action="/guardarAlbum" method="post">
-        <label for="title">Título</label>
-        <input type="text" name="titulo">
-        <br><br>
+<div class="alert alert-warning alert-dismissible fade show mt-5" role="alert">
+    <strong>{{mensaje}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 
-        <label for="artist">Artista</label>
-        <input type="text" name="artista">
-        <br><br>
+{%endfor%}
+{%endif%}
+{%endwith%}
 
-        <label for="year">Año</label>
-        <input type="number" name="anio">
-        <br><br>
+<h1 class="text-center mt-5 mb-5 display-4 text-danger">Gestion de albums.</h1>
+<!-- formulario de creacion de album -->
+<div class="row">
+    <div class="col-md-5">
+        <form action="/guardarAlbum" method="post">
+            <label for="title">Título</label>
+            <input type="text" name="titulo">
 
-        <button type="submit">Guardar Album</button>
-        <br><br>
-        <br><br>
 
+            <label for="artist">Artista</label>
+            <input type="text" name="artista">
+
+
+            <label for="year">Año</label>
+            <input type="number" name="anio">
+
+
+            <button type="submit">Guardar Album</button>
+
+        </form>
+    </div> <!-- cierre div para guardar albums -->
+
+    <div class="col-md-7">
         <table>
             <thead>
                 <tr>
@@ -43,13 +56,13 @@
                     <td>{{ album[2] }}</td>
                     <td>{{ album[3] }}</td>
                     <td>
-                        <a href="/editarAlbum/{{ album[0] }}">Editar</a>
-                        <a href="/eliminarAlbum/{{ album[0] }}">Eliminar</a>
+                        <a href="/editar/{{ album[0] }}">Editar</a>
+                        <a href="/eliminar/{{ album[0] }}" onclick="return confirmarEliminacion()">Eliminar</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-</body>
-
-</html>
+    </div> <!-- cierre div para tabla de albums -->
+</div>
+{% endblock %}

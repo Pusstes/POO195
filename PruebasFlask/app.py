@@ -43,6 +43,50 @@ def guardarMedico():
         flash('El médico fue registrado correctamente')
         return redirect(url_for('consulta'))
 
+#ruta para editar un registro
+@app.route('/editar/<string:id>')
+def editar(id):
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM medicos WHERE id = {0}'.format(id))
+    medicoE = cursor.fetchone()
+    cursor.close()
+    return render_template('editar.html', medico=medicoE)
+
+#ruta para actualizar un registro
+@app.route('/ActualizarMedico/<string:id>', methods=['POST'])
+def actualizarMedico(id):
+    if request.method == 'POST':
+        try:
+            frfc = request.form['rfc']
+            fnombre = request.form['nombre']
+            fcedula = request.form['cedula']
+            fcorreo = request.form['correo']
+            fpass = request.form['pass']
+            frol = request.form['rol']
+            cursor = mysql.connection.cursor()
+            cursor.execute('UPDATE medicos SET rfc=%s, nombre=%s, cedula=%s, correo=%s, pass=%s, rol=%s WHERE id = {0}'.format(id), (frfc, fnombre, fcedula, fcorreo, fpass, frol))
+            mysql.connection.commit()
+            cursor.close()
+            flash('Registro actualizado correctamente')
+            return redirect(url_for('consulta'))
+        except Exception as e:
+            flash('Error al actualizar el registro' + str(e))
+            return redirect(url_for('consulta'))
+    
+#Ruta para eliminar un registro
+@app.route('/eliminar/<string:id>')
+def eliminar(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('DELETE FROM medicos WHERE id = {0}'.format(id))
+        mysql.connection.commit()
+        cursor.close()
+        flash('Registro eliminado correctamente')
+        return redirect(url_for('consulta'))
+    except Exception as e:
+        flash('Error al eliminar el registro' + str(e))
+        return redirect(url_for('consulta'))
+
 # Manejo de excepciones para rutas no encontradas
 @app.errorhandler(404)
 def paginano(e):
