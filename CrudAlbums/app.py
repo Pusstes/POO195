@@ -32,7 +32,7 @@ def guardarAlbum():
         cursor = mysql.connection.cursor()
         cursor.execute('INSERT INTO albums(titulo, artista, anio) VALUES(%s, %s, %s)', (Ftitulo, Fartista, Fanio))
         mysql.connection.commit()
-        flash('Album Guardado Correctamente')
+        flash('Album Guardado Correctamente', 'success')
         return redirect(url_for('index'))
     
 @app.route('/editar/<id>')
@@ -54,17 +54,13 @@ def ActualizarAlbum(id):
             cursor = mysql.connection.cursor()
             cursor.execute('UPDATE albums set titulo=%s , artista=%s , anio=%s where idAlbum=%s', (Ftitulo, Fartista, Fanio, id))
             mysql.connection.commit()
-            flash('Álbum editado correctamente')
+            flash('Álbum editado correctamente', 'info')
             return redirect(url_for('index'))
         
         except Exception as e:
             flash('Error al guardar el álbum: ' + str(e))
             return redirect(url_for('index'))
 
-        except Exception as e:
-            flash('Error al guardar el álbum: ' + str(e))
-            return redirect(url_for('index'))
-        
 #Ruta para eliminar un álbum
 @app.route('/eliminar/<id>')
 def eliminarAlbum(id):
@@ -72,7 +68,7 @@ def eliminarAlbum(id):
         cursor = mysql.connection.cursor()
         cursor.execute('DELETE FROM albums WHERE idAlbum=%s', [id])
         mysql.connection.commit()
-        flash('Álbum eliminado correctamente')
+        flash('Álbum eliminado correctamente', 'danger')
         return redirect(url_for('index'))
     except Exception as e:
         flash('Error al eliminar el álbum: ' + str(e))

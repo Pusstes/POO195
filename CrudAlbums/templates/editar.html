@@ -1,23 +1,26 @@
-
 {% extends "Plantilla.html" %}
 
 {% block body %}
-<h1>Editar Album</h1>
-
-<form action="/ActualizarAlbum/{{album.0}}" method="post">
-
-
-
-<label>Titulo:</label>
-<input type="text" name="txtTitulo" value="{{album.1}}">
-
-<label>Artista</label>
-<input type="text" name="txtArtista" value="{{album.2}}">
+<div class="container">
+    <h1>Editar Album</h1>
+    <form action="/ActualizarAlbum/{{album.0}}" method="post">
 
 
-<label>Año</label>
-<input type="number" name="txtAnio" value="{{album.3}}">
 
-<button type="submit">Editar Album</button>
-</form>
+        <label>Titulo:</label>
+        <input type="text" name="txtTitulo" value="{{album.1}}" class="form-control">
+
+        <label>Artista:</label>
+        <input type="text" name="txtArtista" value="{{album.2}}" class="form-control">
+
+
+        <label>Año:</label>
+        <input type="number" name="txtAnio" value="{{album.3}}" class="form-control">
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-outline-warning mt-5 mb-5">Editar Album</button>
+        </div>
+
+    </form>
+</div>
 {% endblock %}

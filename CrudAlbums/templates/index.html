@@ -1,68 +1,71 @@
-{% extends "Plantilla.html"%}
-{% block body %}
+{% extends "Plantilla.html" %} <!-- hereda de Plantilla.html -->
+{% block body %} <!--creacion de bloque body para el contenido de la pagina que hereda de Plantilla.html -->
 <!-- mensaje jinja -->
-{%with msj= get_flashed_messages() %}
-{% if msj %}
-{% for mensaje in msj %}
+{% with messages = get_flashed_messages(with_categories = true) %} 
+    {% if messages %} 
+        {% for category, message in messages %} 
+            <script>
+                Swal.fire({
+                    title: "{% if category == 'success' %}Correcto{% elif category == 'info' %}Editado{% elif category == 'danger' %}Eliminado{% endif %}",
+                    text: "{{ message }}",
+                    icon: "{% if category == 'success' %}success{% elif category == 'info' %}info{% elif category == 'danger' %}error{% endif %}"
+                });
+            </script>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
-
-<div class="alert alert-warning alert-dismissible fade show mt-5" role="alert">
-    <strong>{{mensaje}}</strong>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-
-{%endfor%}
-{%endif%}
-{%endwith%}
-
-<h1 class="text-center mt-5 mb-5 display-4 text-danger">Gestion de albums.</h1>
-<!-- formulario de creacion de album -->
+<h2 class="text-center mt-5 mb-5 display-4 text-danger">Gestión de álbumes.</h2>
 <div class="row">
     <div class="col-md-5">
-        <form action="/guardarAlbum" method="post">
-            <label for="title">Título</label>
-            <input type="text" name="titulo">
-
-
-            <label for="artist">Artista</label>
-            <input type="text" name="artista">
-
-
-            <label for="year">Año</label>
-            <input type="number" name="anio">
-
-
-            <button type="submit">Guardar Album</button>
-
-        </form>
-    </div> <!-- cierre div para guardar albums -->
+        <div class="container">
+            <form action="/guardarAlbum" method="post">
+                <div class="mb-3">
+                    <label for="title">Título</label>
+                    <input type="text" name="titulo" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="artist">Artista</label>
+                    <input type="text" name="artista" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="year">Año</label>
+                    <input type="number" name="anio" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-outline-success mt-2 mb-3">Guardar Álbum</button>
+            </form>
+        </div>
+    </div>
 
     <div class="col-md-7">
-        <table>
-            <thead>
-                <tr>
-                    <th>Id:</th>
-                    <th>Titulo:</th>
-                    <th>Artista:</th>
-                    <th>Año:</th>
-                    <th>Acciones:</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for album in albums %}
-                <tr>
-                    <td>{{ album[0] }}</td>
-                    <td>{{ album[1] }}</td>
-                    <td>{{ album[2] }}</td>
-                    <td>{{ album[3] }}</td>
-                    <td>
-                        <a href="/editar/{{ album[0] }}">Editar</a>
-                        <a href="/eliminar/{{ album[0] }}" onclick="return confirmarEliminacion()">Eliminar</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div> <!-- cierre div para tabla de albums -->
-</div>
-{% endblock %}
+        <div class="container">
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID:</th>
+                        <th>Título:</th>
+                        <th>Artista:</th>
+                        <th>Año:</th>
+                        <th>Acciones:</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for album in albums %} <!-- ciclo for para recorrer la lista de albums -->
+                    <tr>
+                        <td>{{ album[0] }}</td>
+                        <td>{{ album[1] }}</td>
+                        <td>{{ album[2] }}</td>
+                        <td>{{ album[3] }}</td>
+                        <td>
+                            <a href="/editar/{{ album[0] }}" class="btn btn-warning">Editar</a>
+                            <a href="/eliminar/{{ album[0] }}" onclick="return confirmarEliminacion()" class="btn btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %} <!-- fin del ciclo for -->
+                </tbody> <!-- fin del cuerpo de la tabla -->
+            </table> <!-- fin de la tabla -->
+        </div> <!-- fin del contenedor -->
+    </div> <!-- fin de la columna -->
+</div> <!-- fin de la fila -->
+{% endblock %} <!-- fin del bloque body -->
