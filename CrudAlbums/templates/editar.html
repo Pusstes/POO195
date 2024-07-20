@@ -3,19 +3,49 @@
 {% block body %}
 <div class="container">
     <h1>Editar Album</h1>
-    <form action="/ActualizarAlbum/{{album.0}}" method="post">
+    <!-- enctype es necesario para subir archivos en el formulario HTML  -->
+    <form action="/ActualizarAlbum/{{album.0}}" method="post" enctype="multipart/form-data">
 
+        <div class="mb-3">
+            <label>Titulo:</label>
+            <input type="text" name="txtTitulo" value="{{album.1}}" class="form-control">
+        </div>
 
+        <div class="mb-3">
+            <label>Artista:</label>
+            <input type="text" name="txtArtista" value="{{album.2}}" class="form-control">
+        </div>
 
-        <label>Titulo:</label>
-        <input type="text" name="txtTitulo" value="{{album.1}}" class="form-control">
+        <div class="mb-3">
+            <label>Año:</label>
+            <input type="number" name="txtAnio" value="{{album.3}}" class="form-control">
+        </div>
 
-        <label>Artista:</label>
-        <input type="text" name="txtArtista" value="{{album.2}}" class="form-control">
+        <div class="mb-3">
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-outline-warning mt-5 mb-5">Editar Album</button>
+            </div>
+        </div>
 
+        <div class="mb-3">
+            <label>Portada Actual:</label>
+            <div>
+                {% if album[4] %}
+                <!-- condicion para mostrar la portada actual del album si no tiene portada se muestra una imagen por defecto -->
+                <img src="{{ url_for('uploaded_file', filename=album[4]) }}" alt="Portada"
+                    style="width: 150px; height: 150px; display: block; margin-bottom: 10px;"> 
+                {% else %}
+                <img src="{{ url_for('static', filename='IMG/default.jpg') }}" alt="Sin portada"
+                    style="width: 150px; height: 150px; display: block; margin-bottom: 10px;">
+                {% endif %}
+            </div>
+        </div>
 
-        <label>Año:</label>
-        <input type="number" name="txtAnio" value="{{album.3}}" class="form-control">
+        <!-- aqui se muestra la portada actual del album y se le da la opcion al usuario de subir una nueva portada -->
+        <div class="mb-3">
+            <label>Subir Nueva Portada:</label>
+            <input type="file" name="portada" accept=".jpg, .png" class="form-control">
+        </div>
 
         <div class="d-grid gap-2">
             <button type="submit" class="btn btn-outline-warning mt-5 mb-5">Editar Album</button>
